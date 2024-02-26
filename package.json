@@ -7,7 +7,7 @@
         "start": "ts-node .",
         "start:dev": "nodemon ."
     },
-    "author": "Mikhail Lapitskiy",
+    "author": "Andrei Auchynnikau, Mikhail Lapitskiy",
     "keywords": [],
     "license": "ISC",
     "devDependencies": {
