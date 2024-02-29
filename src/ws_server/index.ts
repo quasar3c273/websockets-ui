@@ -15,6 +15,7 @@ export const actionsWS = (socket: GameWS): void => {
 
       switch (type) {
         case RequestType.REG:
+          handlePlayerAuth(socket, data);
           break;
 
         case RequestType.CREATE_ROOM:
