@@ -8,9 +8,5 @@ export const getRoomList = (): { roomId: number; roomUsers: RoomPlayerData[] }[]
 }
 
 export const getWinsTable = (): Win[] => {
-  try {
-    return Object.values(winners);
-  } catch (error) {
-    throw new Error('Error while wins table get');
-  }
+  return Object.values(winners);
 };
