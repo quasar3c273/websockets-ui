@@ -8,8 +8,12 @@ export enum RequestType {
   SINGLE_PLAY = 'single_play',
 }
 
-export type RequestBody = {
-  type: `${RequestType}`;
-  data: string;
-  id: 0;
-};
+export enum ResponseType {
+  REG = 'reg',
+  UPDATE_ROOM = 'update_room',
+  UPDATE_WINNER_LIST = 'update_winners',
+  ADD_SHIPS = 'add_ships',
+  ATTACK = 'attack',
+  RANDOM_ATTACK = 'randomAttack',
+  SINGLE_PLAY = 'single_play',
+}
