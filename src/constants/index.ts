@@ -14,3 +14,4 @@ export const DEFAULT_BOT_INFO = {
   gameId: null,
 }
 
+export const TWO = 2

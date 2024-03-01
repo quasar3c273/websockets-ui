@@ -1,6 +1,11 @@
-import { GameWS } from '../models/player-models';
-import { handleDisconnect } from '../controllers/player-controller';
+import { handleDisconnect } from '~/controllers/player-controller';
+import { handleAddShips, handleAttack } from '~/controllers/game-play-controller';
+import { handleSinglePlay } from '~/controllers/bot-play-controller';
 import {RequestType} from "~/types/Request";
+import handlePlayerAuth from "~/gameActions/getPlayerAuth";
+import {GameWS} from "~/models/interfacesTypes";
+import {createRoom} from "~/gameActions/createRoom";
+import {addToRoom} from "~/gameActions/addRoom";
 
 export const actionsWS = (socket: GameWS): void => {
   socket.on('message', (msg: Buffer) => {
@@ -23,6 +28,7 @@ export const actionsWS = (socket: GameWS): void => {
           break;
 
         case RequestType.ADD_USER_TO_ROOM:
+          addToRoom(socket, data);
           break;
 
         case RequestType.ADD_SHIPS:
