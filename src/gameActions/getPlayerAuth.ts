@@ -1,16 +1,15 @@
-import { GameWS, PlayerAuthData } from "~/models/player-models";
-import { addPlayer } from "~/services/store-service";
-import { createId } from "~/utils/create-id";
+import { createRandomId } from "~/utils/createRandomId";
 import { ResponseType } from "~/types/Request";
 import { generalMessage } from "~/ws_server/wsActions/sendWSMsgForAllActive";
 import {players, wsStore} from "~/store/wsStore";
 import {DEFAULT_BOT_INFO} from "~/constants";
-import {getRoomList, getWinsTable} from "~/services/utils";
+import {addPlayer, getRoomList, getWinsTable} from "~/services/utils";
+import {CreatorRoomData, GameWS} from "~/models/interfacesTypes";
 
 const handlePlayerAuth = (socket: GameWS, data: string): void => {
   try {
     let authResponseData
-    const { name, password }: PlayerAuthData = JSON.parse(data)
+    const { name, password }: CreatorRoomData = JSON.parse(data)
     const existingPlayer = Object.values(players)
       .find(player => player.name === name && player.password === password)
 
@@ -34,7 +33,7 @@ const handlePlayerAuth = (socket: GameWS, data: string): void => {
       generalMessage(ResponseType.UPDATE_ROOM, JSON.stringify(getRoomList()))
       generalMessage(ResponseType.UPDATE_WINNER_LIST, JSON.stringify(getWinsTable()))
     } else {
-      const id = createId();
+      const id = createRandomId();
       socket.playerId = id;
       socket.botInfo = DEFAULT_BOT_INFO
 
