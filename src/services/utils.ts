@@ -23,3 +23,16 @@ export const addPlayer = (name: string, password: string, id: number): { message
 
   return {message: '', isSuccessful: true}
 }
+
+export const addPlayerToRoom = (roomId: number, playerId: number): RoomUsersData[] => {
+  const playerInfo: RoomUsersData = {
+    index: playerId,
+    name: players[playerId].name,
+  }
+
+  if (!roomInfo[roomId].roomUsers.some((roomPlayer) => roomPlayer.index === playerId)) {
+    roomInfo[roomId].roomUsers.push(playerInfo)
+  }
+
+  return roomInfo[roomId].roomUsers
+}

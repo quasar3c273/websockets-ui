@@ -19,6 +19,7 @@ export const actionsWS = (socket: GameWS): void => {
           break;
 
         case RequestType.CREATE_ROOM:
+          createRoom(socket);
           break;
 
         case RequestType.ADD_USER_TO_ROOM:

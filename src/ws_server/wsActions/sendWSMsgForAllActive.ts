@@ -16,8 +16,6 @@ export const generalMessage = (type: string, data: string): void => {
 
     console.log(`Msg for all: type: ${type}, value: ${data}`);
   } catch (err) {
-    if (err) {
-      console.error(err.message);
-    }
+    console.error(err.message);
   }
 }
