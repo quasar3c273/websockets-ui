@@ -1,15 +1,14 @@
-import {httpServer} from './http_server/index';
-import {actionsWS} from './ws_server';
-import {setWssCon} from "~/store/wsStore";
+import {httpServer} from '~/http_server';
+import {handleWsConnection} from './ws_server';
 import {httpPort, wsPort, wss} from "~/constants";
-
+import {setNewWssStore} from "~/ws_server/store/wsStore";
 
 httpServer.listen(httpPort, () => {
-  console.log(`HTTP server on port: ${httpPort}`);
+  console.log(`HTTP server listening on port ${httpPort}`);
 });
 
-setWssCon(wss);
+setNewWssStore(wss);
 
-console.log(`Websocket server on port: ${wsPort}`);
+console.log(`Websocket server listening on port ${wsPort}`);
 
-wss.on('connection', actionsWS);
+wss.on('connection', handleWsConnection);

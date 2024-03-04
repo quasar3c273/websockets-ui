@@ -1,13 +1,14 @@
-import { handleDisconnect } from '~/controllers/player-controller';
-import { handleAddShips, handleAttack } from '~/controllers/game-play-controller';
-import { handleSinglePlay } from '~/controllers/bot-play-controller';
-import {RequestType} from "~/types/Request";
-import handlePlayerAuth from "~/gameActions/getPlayerAuth";
-import {GameWS} from "~/models/interfacesTypes";
-import {createRoom} from "~/gameActions/createRoom";
-import {addToRoom} from "~/gameActions/addRoom";
+import {disconnectAction} from '~/gameActions/disconnect';
+import {authPlayerAction} from "~/gameActions/auth";
+import {createRoomAction} from "~/gameActions/createRoom";
+import {addPlayerToRoomAction} from "~/gameActions/addUserToRoom";
+import {addShipsAction} from "~/gameActions/addShip";
+import {attackAction} from "~/gameActions/attack";
+import {selectSinglePlayAction} from "~/gameActions/singlePlay";
+import {ActionTypes} from "~/constants";
+import {BattleShipWSS} from "~/types/wsModel";
 
-export const actionsWS = (socket: GameWS): void => {
+export const handleWsConnection = (socket: BattleShipWSS): void => {
   socket.on('message', (msg: Buffer) => {
     try {
       const { type, data }: {
@@ -19,46 +20,51 @@ export const actionsWS = (socket: GameWS): void => {
       console.log(`Received command: ${type}, value: ${data}`);
 
       switch (type) {
-        case RequestType.REG:
-          handlePlayerAuth(socket, data);
+        case ActionTypes.REG:
+          authPlayerAction(socket, data);
           break;
 
-        case RequestType.CREATE_ROOM:
-          createRoom(socket);
+        case ActionTypes.CREATE_ROOM:
+          createRoomAction(socket);
           break;
 
-        case RequestType.ADD_USER_TO_ROOM:
-          addToRoom(socket, data);
+        case ActionTypes.ADD_USER_TO_ROOM:
+          addPlayerToRoomAction(socket, data);
           break;
 
-        case RequestType.ADD_SHIPS:
+        case ActionTypes.ADD_SHIPS:
+          addShipsAction(socket, data);
           break;
 
-        case RequestType.ATTACK:
+        case ActionTypes.ATTACK:
+          attackAction(socket, data);
           break;
 
-        case RequestType.RANDOM_ATTACK:
+        case ActionTypes.RANDOM_ATTACK:
+          attackAction(socket, data);
           break;
 
-        case RequestType.SINGLE_PLAY:
+        case ActionTypes.SINGLE_PLAY:
+          selectSinglePlayAction(socket);
           break;
 
         default:
+          console.error(`Unknown command: ${data}`);
           break;
       }
-    } catch (err) {
-      if (err) {
-        console.error(err.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
       }
     }
   });
 
   socket.on('close', () => {
     try {
-      handleDisconnect(socket);
-    } catch (err) {
-      if (err) {
-        console.error(err.message);
+      disconnectAction(socket);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
       }
     }
   });
