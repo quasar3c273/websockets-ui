@@ -29,12 +29,13 @@ const attackAction = (socket: BattleShipWSS, data: string): void => {
   const {board, ships: enemyShips} = opponentPlayer;
 
   let {x, y} = requestData;
+  console.log('{x, y}', {x, y})
 
   if (indexPlayer !== activePlayerId) {
     return;
   }
 
-  if (!x && !y) {
+  if (x === undefined && y === undefined) {
     const randomCoordinate = getRandomCoordinate(board) as Coordinate;
     x = randomCoordinate.x;
     y = randomCoordinate.y;
